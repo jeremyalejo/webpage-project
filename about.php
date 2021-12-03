@@ -5,7 +5,7 @@
     { 
         session_start(); 
     } 
-a
+
     $query = "SELECT * FROM categories";
 
     $statement = $db->prepare($query);
