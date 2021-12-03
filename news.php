@@ -1,6 +1,6 @@
 <?php
     $pageResults = 5;
-    $hi = "";
+
     $query = "SELECT * FROM news ORDER BY date_released DESC";
     $statement = $db->prepare($query);
     $statement->execute(); 	
