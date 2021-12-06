@@ -50,17 +50,31 @@
                                 <a class="nav-link px-lg-3 py-3 py-lg-3" href="maps.php"><span>Maps</span></a>
                             </ul>   
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" >Categories<span class="fa fa-caret-down"></span></a>
-                            <ul class="dropdown-menu">
-                            <?php while($row = $statement2->fetch()): ?>
-                                <a class="nav-link px-lg-3 py-3 py-lg-3" href="editCategory.php?categoryID=<?=$row['categoryID']?>&name=<?=$row['name']?>">
-                                    <span><?= $row['name'] ?></span>
-                                </a>
-                            <?php endwhile ?>
-                                <a class="nav-link px-lg-3 py-3 py-lg-3" href="category.php"><span>Add category ++</span></a>
-                            </ul>   
-                        </li>
+                        <?php if($_SESSION['currentUser'] != "Guest") :?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" >Edit Categories<span class="fa fa-caret-down"></span></a>
+                                <ul class="dropdown-menu">
+                                <?php while($row = $statement2->fetch()): ?>
+                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="editCategory.php?categoryID=<?=$row['categoryID']?>&name=<?=$row['name']?>">
+                                        <span><?= $row['name'] ?></span>
+                                    </a>
+                                <?php endwhile ?>
+                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="category.php"><span>Add category ++</span></a>
+                                </ul>   
+                            </li>
+                        <?php else :?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" >Categories<span class="fa fa-caret-down"></span></a>
+                                <ul class="dropdown-menu">
+                                <?php while($row = $statement2->fetch()): ?>
+                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="editCategory.php?categoryID=<?=$row['categoryID']?>&name=<?=$row['name']?>">
+                                        <span><?= $row['name'] ?></span>
+                                    </a>
+                                <?php endwhile ?>
+                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="category.php"><span>Add category ++</span></a>
+                                </ul>   
+                            </li>
+                        <?php endif ?>
                         <?php if($_SESSION['currentUser'] != "Guest") :?>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="logout.php">Logout</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">Welcome, <?= $_SESSION['currentUser'] ?></a></li>

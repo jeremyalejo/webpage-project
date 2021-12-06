@@ -20,14 +20,13 @@
         exit();
     } 
     // UPDATE post if title, content and id are present in POST.
-    else if ($_POST && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['date_released']) && !empty($_POST['newsID'])) {
+    else if ($_POST && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['newsID'])) {
         $title  = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $content = filter_input(INPUT_POST, 'content');
 
- 		$query     = "UPDATE news SET title = :title, date_released = :date_released, content = :content WHERE newsID = :newsID";
+ 		$query     = "UPDATE news SET title = :title, content = :content WHERE newsID = :newsID";
         $statement = $db->prepare($query);
 	   	$statement->bindValue(':title', $title);    
-        $statement->bindValue(":date_released", $_POST['date_released']);   
 	   	$statement->bindValue(':content', $content);
 	   	$statement->bindValue(':newsID', $newsID, PDO::PARAM_INT);
 	       
@@ -130,10 +129,6 @@
                                 <p>
                                     <label for="title">Title</label><br>
                                     <input type = "text" name="title" id="title" size="50" value="<?= $row['title']?>" />
-                                </p>
-                                <p>
-                                    <label for="date">Date Released</label><br>
-                                    <input type = "date" id="date_released" name="date_released" value="<?= $row['date_released']?>">
                                 </p>
                                 <p>
                                     <label for="content">Content</label><br>

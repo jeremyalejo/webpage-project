@@ -18,7 +18,7 @@
     $firstPageResult = ($page - 1) * $pageResults;
 
     // Retrieve selected results from database and display them on page
-    $query = "SELECT * FROM news ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
+    $query = "SELECT * FROM news JOIN categories ON news.categoryID=categories.categoryID ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
     $statement = $db->prepare($query);
     $statement->execute(); 	
 
@@ -51,6 +51,7 @@
                     <?php while(($row = $statement->fetch()) && ($counter < 10)): ?> 
                         <div class = "newsForm">
                             <h2><a href="showNews.php?newsID=<?= $row['newsID']?>&p=<?=(str_replace(' ', '-', strtolower($row['title'])))?>"><?= $row['title']?></a></h2>
+                            <p> Category: <?= $row['name'] ?></p>
                             <p>
                                 <?php 
                                     $orgDate = $row['date_released'];  

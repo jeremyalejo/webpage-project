@@ -6,18 +6,20 @@
     } 
 
     require('connect.php');
-    
+
 	$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content');
+    $categoryID = filter_input(INPUT_POST, 'categoryID', FILTER_SANITIZE_NUMBER_INT);
 
 	// if post is created and title and content fields are not empty
-    if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
+    if ($_POST && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['categoryID'])) {
 
-        $query = "INSERT INTO news (title, content) VALUES (:title, :content)";
+        $query = "INSERT INTO news (title, content, categoryID) VALUES (:title, :content, :categoryID)";
         $statement = $db->prepare($query);
 
         $statement->bindValue(":title", $title);
         $statement->bindValue(":content", $content);
+        $statement->bindValue(":categoryID", $categoryID);
         
         $statement->execute();
       
@@ -121,7 +123,7 @@
                                 </p>
                                 <p>
                                     <label for="content">Category</label><br>
-                                    <select name="category" id="category" class="form-control">
+                                    <select name="categoryID" id="categoryID" class="form-control">
                                         <?php while($row = $statement2->fetch()): ?>
                                             <option value="<?= $row['categoryID'] ?>"><?= $row['name'] ?></option>
                                         <?php endwhile ?>
