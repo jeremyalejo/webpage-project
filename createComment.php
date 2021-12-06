@@ -112,16 +112,9 @@
                                         <label for="content">Content</label><br>
                                         <textarea name="content" id="content" rows="4" cols="70"></textarea>
                                     </p>
-                                <div class="elem-group">
-                                    <label for="captcha">Please Enter the Captcha Text</label></br>
-                                    <img src="captcha.php" alt="CAPTCHA" class="captcha-image">
-                                    <br>
-                                    <input type="text" id="captcha" name="captcha" pattern="[A-Z]{6}">
-                                </div>
-                                
-                                <p>
-                                    <input type="submit" name="submit" value="Create" />
-                                </p>
+                                    <p>
+                                        <input type="submit" name="submit" value="Create" />
+                                    </p>
                             </fieldset>
                         </form>
 

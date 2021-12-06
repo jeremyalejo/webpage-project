@@ -47,22 +47,6 @@
                     Menu
                     <i class="fas fa-bars"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="home.php">Home</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.php">About</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#">Login</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" >Categories <span class="fa fa-caret-down"></span></a>
-                            <ul id ="dropdown"class="dropdown-menu">
-                                <a class="nav-link px-lg-3 py-3 py-lg-3" href="#">Agents</a>
-                                <a class="nav-link px-lg-3 py-3 py-lg-3" href="#">Game Modes</a>
-                                <a class="nav-link px-lg-3 py-3 py-lg-3" href="#">Maps</a>
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
             </div>
         </nav>
         <!-- Page Header-->
@@ -96,6 +80,12 @@
                         </div>
                         <div id="registrationPasswordSecure" style="margin-top: 10px">
                             <input type="password" placeholder="Retype Password" id="securePassword" name="securePassword" required>
+                        </div><br>
+                        <div class="elem-group">
+                            <label for="captcha">Please Enter the Captcha Text</label></br>
+                            <img src="captcha.php" alt="CAPTCHA" class="captcha-image">
+                            <br>
+                            <input type="text" id="captcha" name="captcha" pattern="[A-Z]{6}">
                         </div>
                         <div id="submit" style="margin-top: 20px">
                             <input type="submit" id="register" name="register" value="Register">
