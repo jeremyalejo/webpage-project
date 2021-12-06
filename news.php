@@ -1,27 +1,56 @@
 <?php
-    $pageResults = 5;
-
-    $query = "SELECT * FROM news";
-    $statement = $db->prepare($query);
-    $statement->execute(); 	
-    $results = $statement->rowCount();
-
-    $totalPages = ceil($results / $pageResults);
-
-    if (!isset($_GET['page'])) {
-        $page = 1;
-    }
-    else {
-        $page = $_GET['page'];
-    }
-
-    $firstPageResult = ($page - 1) * $pageResults;
-
     // Retrieve selected results from database and display them on page
-    $query = "SELECT * FROM news JOIN categories ON news.categoryID=categories.categoryID ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
-    $statement = $db->prepare($query);
-    $statement->execute(); 	
+    // filtered news content by getting the current category ID
+    if(isset($_GET['categoryID'])) {
+        $categoryID = filter_input(INPUT_GET, 'categoryID', FILTER_SANITIZE_NUMBER_INT);
+        $pageResults = 5;
 
+        $query = "SELECT * FROM news WHERE categoryID = :categoryID";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":categoryID", $categoryID, PDO::PARAM_INT);
+        $statement->execute(); 	
+        $results = $statement->rowCount();
+
+        $totalPages = ceil($results / $pageResults);
+
+        if (!isset($_GET['page'])) {
+            $page = 1;
+        }
+        else {
+            $page = $_GET['page'];
+        }
+
+        $firstPageResult = ($page - 1) * $pageResults;
+
+        $query = "SELECT * FROM news JOIN categories ON news.categoryID=categories.categoryID WHERE news.categoryID = :categoryID ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(":categoryID", $categoryID, PDO::PARAM_INT);
+        $statement->execute(); 
+    }
+    else{
+        $pageResults = 5;
+
+        $query = "SELECT * FROM news";
+        $statement = $db->prepare($query);
+        $statement->execute(); 	
+        $results = $statement->rowCount();
+
+        $totalPages = ceil($results / $pageResults);
+
+        if (!isset($_GET['page'])) {
+            $page = 1;
+        }
+        else {
+            $page = $_GET['page'];
+        }
+
+        $firstPageResult = ($page - 1) * $pageResults;
+
+        $query = "SELECT * FROM news JOIN categories ON news.categoryID=categories.categoryID ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
+        $statement = $db->prepare($query);
+        $statement->execute(); 
+    }
     $counter=0;
 ?>
 
@@ -48,7 +77,7 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <h1> Featured News </h1>
                     <!-- Post preview-->
-                    <?php while(($row = $statement->fetch()) && ($counter < 10)): ?> 
+                    <?php while($row = $statement->fetch()): ?> 
                         <div class = "newsForm">
                             <h2><a href="showNews.php?newsID=<?= $row['newsID']?>&p=<?=(str_replace(' ', '-', strtolower($row['title'])))?>"><?= $row['title']?></a></h2>
                             <p> Category: <?= $row['name'] ?></p>
@@ -87,17 +116,30 @@
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="text-center">
             <ul class="pagination pagination-lg justify-content-center">
-                <?php 
-                    for ($page_no = 1; $page_no <= $totalPages; $page_no++) {
-                        if ($page == $page_no) {
-                            $state = '"active"';
-                        }
-                        else {
-                            $state = "";
-                        }
-                        echo '<li class="' . $state . '"><a href="home.php?page=' . $page_no . '">' . $page_no . '</a></li>';
-                    }           
-                ?>
+                    <?php for ($page_no = 1; $page_no <= $totalPages; $page_no++) : ?>
+                        <?php if(isset($_GET['categoryID'])) : ?>
+                            <?php
+                                if ($page == $page_no) {
+                                    $state = '"active"';
+                                }
+                                else {
+                                    $state = "";
+                                }
+                                echo '<li class="' . $state . '"><a href="home.php?page=' . $page_no . '&categoryID='. $_GET['categoryID'] .'">' . $page_no . '&nbsp;</a></li>';
+                            ?>
+                        <?php else : ?>
+                            <?php
+                                if ($page == $page_no) {
+                                    $state = '"active"';
+                                }
+                                else {
+                                    $state = "";
+                                }
+                                echo '<li class="' . $state . '"><a href="home.php?page=' . $page_no . '">' . $page_no . '&nbsp;</a></li>';
+                            ?>
+                        <?php endif ?>
+                    <?php endfor ?>       
+                
             </ul>
         </nav>  
         <!-- Bootstrap core JS-->

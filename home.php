@@ -67,7 +67,7 @@
                                 <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" >Categories<span class="fa fa-caret-down"></span></a>
                                 <ul class="dropdown-menu">
                                 <?php while($row = $statement2->fetch()): ?>
-                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="editCategory.php?categoryID=<?=$row['categoryID']?>&name=<?=$row['name']?>">
+                                    <a class="nav-link px-lg-3 py-3 py-lg-3" href="home.php?categoryID=<?=$row['categoryID']?>">
                                         <span><?= $row['name'] ?></span>
                                     </a>
                                 <?php endwhile ?>
