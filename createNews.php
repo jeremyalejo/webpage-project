@@ -5,19 +5,18 @@
         session_start(); 
     } 
     ob_start();
-
+    require("connect.php");
 	$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content');
 
 	// if post is created and title and content fields are not empty
-    if ($_POST && !empty($_POST['title']) && !empty($_POST['date_released']) && !empty($_POST['content'])) {
+    if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
         require('connect.php');
 
-        $query = "INSERT INTO news (title, date_released, content) VALUES (:title, :date_released, :content)";
+        $query = "INSERT INTO news (title, content) VALUES (:title, :content)";
         $statement = $db->prepare($query);
 
         $statement->bindValue(":title", $title);
-        $statement->bindValue(":date_released", $_POST['date_released']);
         $statement->bindValue(":content", $content);
         
         $statement->execute();
@@ -26,6 +25,12 @@
         exit();
         ob_end_flush();
     }
+
+    $categoryQuery = "SELECT * FROM categories";
+    $statement2 = $db->prepare($categoryQuery);
+    $statement2->execute();
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -111,12 +116,16 @@
                                     <input type = "text" name="title" id="title" size="50" />
                                 </p>
                                 <p>
-                                    <label for="date">Date Released</label><br>
-                                    <input type = "date" id="date_released" name="date_released">
-                                </p>
-                                <p>
                                     <label for="content">Content</label><br>
                                     <textarea name="content" id="content" rows="4" cols="70"></textarea>
+                                </p>
+                                <p>
+                                    <label for="content">Category</label><br>
+                                    <select name="category" id="category" class="form-control">
+                                        <?php while($row = $statement2->fetch()): ?>
+                                            <option value="<?= $row['categoryID'] ?>"><?= $row['name'] ?></option>
+                                        <?php endwhile ?>
+                                    </select>
                                 </p>
                                 <p>
                                     <input type="submit" name="submit" value="Create" />
