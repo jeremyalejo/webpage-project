@@ -1,6 +1,11 @@
 <?php
     require('connect.php');
     
+    if(session_status() !== PHP_SESSION_ACTIVE) 
+    { 
+        session_start(); 
+    } 
+
     $newsID = filter_input(INPUT_POST, 'newsID', FILTER_SANITIZE_NUMBER_INT);
     
     // DELETE post if delete button is pressed
@@ -94,13 +99,8 @@
                                 <a class="nav-link px-lg-3 py-3 py-lg-3" href="maps.php"><span>Maps</span></a>
                             </ul>   
                         </li>
-                        <?php if($_SESSION['currentUser'] != "Guest") :?>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="logout.php">Logout</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">Welcome, <?= $_SESSION['currentUser'] ?></a></li>
-                        <?php else :?>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="logout.php">Login</a></li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">Welcome, <?= $_SESSION['currentUser'] ?></a></li>
-                        <?php endif ?>
                     </ul>
                 </div>
             </div>
