@@ -5,6 +5,20 @@
     { 
         session_start(); 
     } 
+
+    // DELETE comment if delete button is pressed
+    if($_POST && !empty($_POST['btnDelete'])){
+        $commentID = filter_input(INPUT_POST, 'commentID', FILTER_SANITIZE_NUMBER_INT);
+    	$query     = "DELETE FROM comments WHERE commentID = :commentID";
+    	$statement = $db->prepare($query);
+    	$statement->bindValue(':commentID', $commentID, PDO::PARAM_INT);
+
+    	$statement->execute();
+
+    	header("Location: home.php");
+        exit();
+    } 
+
 	// retrieves posts to be edited, if id GET parameter is in URL. 
 	if (isset($_GET['newsID'])) { 
         $newsID = filter_input(INPUT_GET, 'newsID', FILTER_SANITIZE_NUMBER_INT);
@@ -16,7 +30,7 @@
         $statement->execute();
         $row = $statement->fetch();
 
-        $commentQuery = "SELECT * FROM comments WHERE newsID = :newsID ORDER BY date_updated DESC";
+        $commentQuery = "SELECT * FROM comments JOIN users ON comments.userID=users.userID WHERE comments.newsID = :newsID ORDER BY date_updated DESC";
         $statement2 = $db->prepare($commentQuery);
         $statement2->bindValue(':newsID', $newsID, PDO::PARAM_INT);
         
@@ -133,19 +147,30 @@
                         <?php while($comments = $statement2->fetch()):?>
                             
                             <?php if($statement2 -> rowcount() > 0): ?>
-                                <h4><?= $comments['title']?></h4>
-                            <p>
-                                <?php 
-                                    $orgDate = $comments['date_updated'];  
-                                    $newDate = date("F d, Y", strtotime($orgDate));  
-                                ?>
-                                <small><?= $newDate?> 
-                                    <?php if($_SESSION['currentUser'] != "Guest") :?>
-                                    - <a href="editComment.php?commentID=<?= $comments['commentID']?>&newsID=<?= $comments['newsID']?>">edit</a>
-                                    <?php endif ?>
-                                </small>
-                            </p>
-                            <p><?= $comments['content'] ?></p>
+                                <p>
+                                    <h4><?= $comments['title']?></h4>
+                                    <small> by: <?= $comments['username'] ?> </small>
+                                </p>
+                                <p>
+                                    <?php 
+                                        $orgDate = $comments['date_updated'];  
+                                        $newDate = date("F d, Y", strtotime($orgDate));  
+                                    ?>
+                                    <small><?= $newDate?> 
+                                        <?php if($_SESSION['currentUser'] != "Admin jeremy" && $_SESSION['currentUser'] != "Guest") :?>
+                                            <?php if($comments['username'] == $_SESSION['currentUser']):?>
+                                            - <a href="editComment.php?commentID=<?= $comments['commentID']?>&newsID=<?= $comments['newsID']?>">edit</a>
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                    </small>
+                                </p>
+                                <p><?= $comments['content'] ?></p>
+                                <?php if($_SESSION['currentUser'] == "Admin jeremy"): ?>
+                                    <form name = 'deleteComment' action='showNews.php' method='post'>
+                                        <input type="hidden" name="commentID" value="<?= $comments['commentID'] ?>">
+                                        <input type="submit" name="btnDelete" value="Delete" onclick="return confirm('Are you sure you wish to delete this post?')" />
+                                    </form>
+                                <?php endif ?>
                             <?php endif?>
                         <?php endwhile?>
                         

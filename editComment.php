@@ -134,9 +134,7 @@
                                 </p>
                                 <p>
                                     <input type="hidden" name="commentID" value="<?= $row['commentID'] ?>">
-                                    <?php if($_SESSION['currentUser'] != "Admin jeremy") :?>
-                                        <input type="submit" name="btnUpdate" value="Update" />
-                                    <?php endif ?>
+                                    <input type="submit" name="btnUpdate" value="Update" />
                                     <input type="submit" name="btnDelete" value="Delete" onclick="return confirm('Are you sure you wish to delete this post?')" />
                                 </p>
                             </fieldset>
