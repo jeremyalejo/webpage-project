@@ -1,17 +1,17 @@
 <?php
-
+    ob_start();
     if(session_status() !== PHP_SESSION_ACTIVE) 
     { 
         session_start(); 
     } 
-    ob_start();
-    require("connect.php");
+
+    require('connect.php');
+    
 	$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content');
 
 	// if post is created and title and content fields are not empty
     if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
-        require('connect.php');
 
         $query = "INSERT INTO news (title, content) VALUES (:title, :content)";
         $statement = $db->prepare($query);

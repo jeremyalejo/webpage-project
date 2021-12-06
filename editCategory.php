@@ -67,6 +67,12 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://cdn.tiny.cloud/1/yyciax6fhx89u9o5khmnp07uvayu26ys5m1hr4180h95gc4l/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+            selector: '#description'
+            });
+        </script>
     </head>
     <body>
         <!-- Navigation-->
@@ -134,7 +140,8 @@
                                     <textarea name="description" id="description" rows="4" cols="70"><?= $row['description'] ?></textarea>
                                 </p>
                                 <p>
-                                    <input type="submit" name="submit" value="Update" />
+                                    <input type="hidden" name="categoryID" value="<?= $row['categoryID'] ?>">
+                                    <input type="submit" name="btnUpdate" value="Update" />
                                     <input type="submit" name="btnDelete" value="Delete" onclick="return confirm('Are you sure you wish to delete this post?')" />
                                 </p>
                             </fieldset>
