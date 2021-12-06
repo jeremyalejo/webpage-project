@@ -1,15 +1,13 @@
 <?php
     $pageResults = 5;
 
-    $query = "SELECT * FROM news ORDER BY date_released DESC";
+    $query = "SELECT * FROM news";
     $statement = $db->prepare($query);
     $statement->execute(); 	
     $results = $statement->rowCount();
 
-    // Determine number of total pages available
     $totalPages = ceil($results / $pageResults);
 
-    // Determine which page number visitor is currently on
     if (!isset($_GET['page'])) {
         $page = 1;
     }
@@ -17,11 +15,10 @@
         $page = $_GET['page'];
     }
 
-    // Determine the sql LIMIT starting number for the results on the displaying page
     $firstPageResult = ($page - 1) * $pageResults;
 
     // Retrieve selected results from database and display them on page
-    $query = "SELECT * FROM news LIMIT " . $firstPageResult . ',' . $pageResults;
+    $query = "SELECT * FROM news ORDER BY date_released DESC LIMIT " . $firstPageResult . ',' . $pageResults;
     $statement = $db->prepare($query);
     $statement->execute(); 	
 
