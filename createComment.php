@@ -1,6 +1,8 @@
 <?php
     ob_start();
 
+    require("connect.php");
+    
     if(session_status() !== PHP_SESSION_ACTIVE) 
     { 
         session_start(); 
