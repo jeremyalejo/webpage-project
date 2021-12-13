@@ -7,14 +7,14 @@
     { 
         session_start(); 
     } 
-
-	// if post is created and title and content fields are not empty
-    if ($_POST && isset($_SESSION['userID']) && isset($_GET['newsID']) && !empty($_POST['title']) && !empty($_POST['content'])) {
+    
+    // if post is created and title and content fields are not empty
+    if ($_POST && isset($_SESSION['userID']) && isset($_GET['newsID']) && !empty($_POST['title']) && !empty($_POST['content'])){
         require('connect.php');
 
         $newsID = filter_input(INPUT_GET, 'newsID', FILTER_SANITIZE_NUMBER_INT);
         $userID = $_SESSION['userID'];
-	    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $query = "INSERT INTO comments (newsID, userID, title, content) VALUES (:newsID, :userID, :title, :content)";
@@ -30,6 +30,7 @@
         exit();
         ob_end_flush();
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -119,11 +120,6 @@
                         </form>
 
                         <?php if(isset($_POST['submit'])) : ?>
-                            <?php if ($_SESSION['captcha_text'] != $_POST['captcha']): ?>
-                                <h1>You entered the incorrect text.<h1>
-                                <?= header("Location: createComment.php?newsID=".$_GET['newsID']) ?>
-                            <?php endif ?>
-
                             <?php if(strlen($title) == 0 || strlen($content) == 0) : ?>
                                 <h1>The title or content of the users post should have at least 1 character.</h1>
                                 <a href="home.php">Return home</a>

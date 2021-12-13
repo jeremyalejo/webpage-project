@@ -5,7 +5,6 @@
     { 
         session_start(); 
     } 
-	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +64,7 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
+                            <
                             <span class="subheading"><?=$_SESSION['currentUser']?>'s Profile</span>
                         </div>
                     </div>
@@ -77,6 +77,7 @@
                 <div class="col-md-10 col-lg-10 col-xl-7">
                     <!-- Post preview-->
                     <p>Welcome to your Profile!</p>
+                    </script>
                 </div>
             </div>
         </div>
